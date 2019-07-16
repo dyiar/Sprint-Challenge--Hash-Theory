@@ -6,9 +6,35 @@
 Answer *get_indices_of_item_weights(int *weights, int length, int limit)
 {
   HashTable *ht = create_hash_table(16);
+  Answer *data = malloc(sizeof(Answer));
 
-  /* YOUR CODE HERE */
+  // put everything in hash table.
+  for (int i = 0; i<length; i++) {
+    hash_table_insert(ht, weights[i], i);
+  }
 
+
+  for (int i = 0; i<length; i++) {
+    // find a difference int and then look to see if there is an index with that difference key.
+    int difference = limit - weights[i];
+    int second_index = hash_table_retrieve(ht, difference);
+    //if there isn't then loop through array again. 
+    if (second_index != -1) {
+      // if there is, we can check those indexes to see which one is the bigger index and set that one first.
+      if(second_index > i) {
+        data->index_1 = second_index;
+        data->index_2 = i;
+      } else {
+        data-> index_1 = i;
+        data-> index_2 = second_index;
+      }
+      destroy_hash_table(ht);
+      return data;
+    }
+
+  }
+
+  destroy_hash_table(ht);
   return NULL;
 }
 
